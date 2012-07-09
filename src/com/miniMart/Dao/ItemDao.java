@@ -5,6 +5,7 @@
 package com.miniMart.Dao;
 
 import com.miniMart.model.Item;
+import java.util.List;
 
 /**
  *
@@ -13,5 +14,7 @@ import com.miniMart.model.Item;
 public interface ItemDao {
     
     public void saveItem(Item it);
+    
+    public List<Item> getAllItems();
     
 }

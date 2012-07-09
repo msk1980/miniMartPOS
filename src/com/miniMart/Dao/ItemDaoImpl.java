@@ -6,7 +6,9 @@ package com.miniMart.Dao;
 
 import com.miniMart.model.Item;
 import com.miniMartPOS.hibernate.HibernateUtil;
+import java.util.List;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 
 import org.hibernate.Session;
 
@@ -27,6 +29,28 @@ public class ItemDaoImpl implements ItemDao {
             he.printStackTrace();
             HibernateUtil.rollbackTransaction();
         }
+    }
+    
+    @Override
+    public List<Item> getAllItems(){
+        
+        try {
+            Session session = HibernateUtil.beginTransaction();
+            Query query = session.createQuery("from Item");
+            List results = query.list();
+            HibernateUtil.commitTransaction();
+            
+            if(results.size() > 0 )
+                return results;
+            else 
+                return null;
+            
+        }
+        catch(HibernateException he){
+            he.printStackTrace();
+        }
+        
+        return null;
     }
     
 }

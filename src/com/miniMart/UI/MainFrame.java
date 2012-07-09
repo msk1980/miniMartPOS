@@ -10,6 +10,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -28,18 +30,21 @@ import javax.swing.UIManager;
  */
 public class MainFrame extends JFrame{
     
+    JPanel inventoryPanel;
+    JPanel buttonPanel;
+    
     public void initComponents(){
         setTitle("MINI MART POS");
         setLayout(new GridLayout(1,1));
-        setPreferredSize(new Dimension(700, 650));
+        setPreferredSize(new Dimension(900, 850));
         
        
         JTabbedPane mainTabbedPane = new JTabbedPane();
         mainTabbedPane.setTabPlacement(JTabbedPane.TOP);
        
         //Inventory pannel initialization
-        JPanel inventoryPanel = new JPanel(new BorderLayout());
-        JPanel buttonPanel = new JPanel();
+        inventoryPanel = new JPanel(new BorderLayout());
+        buttonPanel = new JPanel();
         buttonPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         AddInventory addInventoryPanel = new AddInventory();
         addInventoryPanel.setVisible(true);
@@ -48,6 +53,17 @@ public class MainFrame extends JFrame{
         JButton addInventoryButton = new JButton("Add Inventory");
         JButton editInventoryButton = new JButton("Edit Inventory");
         JButton deleteInventoryButton = new JButton("Delete Inventory");
+        
+        editInventoryButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                inventoryPanel.getComponent(1).setVisible(false);
+                EditInventory editInv = new EditInventory();
+                inventoryPanel.add(editInv, BorderLayout.CENTER);
+                editInv.setVisible(true);
+            }
+        });
         
         buttonPanel.add(addInventoryButton);
         buttonPanel.add(editInventoryButton);
@@ -66,15 +82,9 @@ public class MainFrame extends JFrame{
         
         System.out.println(" Image Icon details : " + invIcon1.getIconHeight() + "   " + invIcon1.getIconWidth());
         
-        
-        //second tab
-        JPanel dummyPanel1 = new JPanel(new BorderLayout());
-        JPanel dummyPanel2 = new JPanel();
-        dummyPanel1.add(dummyPanel2, BorderLayout.CENTER);
-        
-        
+    
         mainTabbedPane.addTab("Inventory",invIcon1, inventoryPanel, "Inventory Mgt functions");
-        mainTabbedPane.addTab("Sales",null,dummyPanel1,"Sales Mgt functions");
+        mainTabbedPane.addTab("Sales",null,new SalesMain(),"Sales Mgt functions");
         
         add(mainTabbedPane);
         pack();
